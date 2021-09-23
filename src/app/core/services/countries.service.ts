@@ -2,15 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { Countries } from '../models/countries.model';
+import { Countries, Region } from '../models/countries.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountriesService {
   apiURL = 'http://api.worldbank.org/v2/';
-  public searchCountryUrl = this.apiURL + 'api/open/search-countries';
-  public showGDPUrl = this.apiURL + 'api/open/show-gdp';
   
   constructor(private http:HttpClient) { }
 
@@ -22,7 +20,15 @@ export class CountriesService {
  }  
 
  getcountries(): Observable<Countries> {
-  return this.http.get<Countries>(this.apiURL + 'country/all/indicator/SP.POP.TOTL?format=json')
+  return this.http.get<Countries>(this.apiURL + 'country/AFE/indicator/AG.AGR.TRAC.NO;SP.POP.TOTL?source=2&format=json')
+  .pipe(
+    retry(1),
+    catchError(this.handleError)
+  )
+}
+
+getRegions() {
+  return this.http.get<Region>(this.apiURL + 'region?format=json')
   .pipe(
     retry(1),
     catchError(this.handleError)

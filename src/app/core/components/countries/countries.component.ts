@@ -33,6 +33,7 @@ export class CountriesComponent implements OnInit {
    loadcountries() {
     return this.contiesService.getcountries().subscribe((data) => {
       this.countries = data;
+      console.log(this.countries);
      })
   }
 
