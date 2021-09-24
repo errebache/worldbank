@@ -1,5 +1,52 @@
 <mat-toolbar>
-    <a routerLink="cocktails" class="logo p-20"> Cocktails </a>
+	<a routerLink="cocktails" class="logo p-20"> World Bank </a>
 
-  </mat-toolbar>
+	<div class="row">
+		<div class="col-md-12">
+			<form [formGroup]="filterForm" class="row">
+				<div class="form-group ml-10 col-4">
+					<select
+						id="region"
+						formControlName="region"
+						class="form-control form-select"
+					>
+						<option class="dropdown-item" [value]="">
+							<label class="text-black-50">Regions</label>
+						</option>
+						<option
+							*ngFor="let region of regions; let x = index"
+							[value]="region?.code"
+							class="dropdown-item"
+						>
+							{{ region?.name }}
+						</option>
+					</select>
+				</div>
 
+				<div class="form-group ml-10 col-4"></div>
+
+				<!-- <div class="form-group col-md-6 col-lg-4 col-xl-3">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="N° de pré-réservation"
+						formControlName="noPreReservation"
+					/>
+				</div>
+
+				<div class="form-group col-md-6 col-lg-4 col-xl-3 text-right ml-auto">
+					<button
+						type="button"
+						class="btn btn-primary btn-with-icoframe"
+						(click)="rechercherDossier()"
+					>
+						<span>Rechercher</span>
+						<div class="ico-frame">
+							<i class="ico-epoc-menu_search"></i>
+						</div>
+					</button>
+				</div> -->
+			</form>
+		</div>
+	</div>
+</mat-toolbar>

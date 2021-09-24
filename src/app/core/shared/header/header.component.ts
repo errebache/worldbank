@@ -1,31 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Region } from '../../models/countries.model';
 import { CountriesService } from '../../services/countries.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+	selector: 'app-header',
+	templateUrl: './header.component.html',
+	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  City: any = ['Florida', 'South Dakota', 'Tennessee', 'Michigan']
-  regions:Region | undefined;
-  constructor(public fb: FormBuilder,private countriesService:CountriesService) { }
+	filterForm: FormGroup;
+	City: any = ['Florida', 'South Dakota', 'Tennessee', 'Michigan'];
+	regions: any = [];
+	constructor(
+		public fb: FormBuilder,
+		private countriesService: CountriesService
+	) {
+		this.filterForm = this.fb.group({
+			region: ['Regions'],
+			indicator: [''],
+			strartYear: [''],
+			endYear: [''],
+		});
+	}
 
-  registrationForm = this.fb.group({
-    cityName: ['']
-  })
-
-  onSubmit() {
-    alert(JSON.stringify(this.registrationForm.value))
-  }
-
-  ngOnInit(): void {
-    this.countriesService.getRegions().subscribe((data)=>{
-      this.regions = data;
-    })
-  }
-
-
+	ngOnInit(): void {
+		this.countriesService.getRegions().subscribe((data) => {
+			let result: any = [];
+			result = data;
+			this.regions = result[1];
+			console.log(this.regions);
+		});
+	}
 }
