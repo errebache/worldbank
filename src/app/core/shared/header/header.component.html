@@ -1,10 +1,9 @@
 <mat-toolbar>
 	<a routerLink="cocktails" class="logo p-20"> World Bank </a>
 
-	<div class="row">
-		<div class="col-md-12">
+	<div class="header-filter">
 			<form [formGroup]="filterForm" class="row">
-				<div class="form-group ml-10 col-4">
+				<div class="form-group ml-10 col-3">
 					<select
 						id="region"
 						formControlName="region"
@@ -22,31 +21,40 @@
 						</option>
 					</select>
 				</div>
-
-				<div class="form-group ml-10 col-4"></div>
-
-				<!-- <div class="form-group col-md-6 col-lg-4 col-xl-3">
+				<div class="form-group col-2">
 					<input
 						type="text"
 						class="form-control"
-						placeholder="N° de pré-réservation"
-						formControlName="noPreReservation"
+						placeholder="Start year "
+						formControlName="startYear"
+						minLength="4"
+						maxLength="4"
 					/>
 				</div>
 
-				<div class="form-group col-md-6 col-lg-4 col-xl-3 text-right ml-auto">
+				<div class="form-group col-2">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="End year "
+						formControlName="endYear"
+						minLength="4"
+						maxLength="4"
+					/>
+				</div>
+
+				<div class="form-group col-2">
 					<button
 						type="button"
 						class="btn btn-primary btn-with-icoframe"
-						(click)="rechercherDossier()"
+						(click)="searchCountry()"
 					>
-						<span>Rechercher</span>
+						<span>Filter</span>
 						<div class="ico-frame">
 							<i class="ico-epoc-menu_search"></i>
 						</div>
 					</button>
-				</div> -->
+				</div>
 			</form>
-		</div>
 	</div>
 </mat-toolbar>

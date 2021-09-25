@@ -42,7 +42,7 @@ export class CountriesService {
 		console.log(indicators);
 		return this.http
 			.get<Countries>(
-				`${this.apiURL}country/${region}/indicator/${indicators}?source=2&format=json&${startYear}:${endYear}`
+				`${this.apiURL}country/${region}/indicator/${indicators}?source=2&format=json&date=${startYear}:${endYear}`
 			)
 			.pipe(retry(1), catchError(this.handleError));
 

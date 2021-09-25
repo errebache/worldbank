@@ -6,7 +6,7 @@
 			</mat-card-title>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="" *ngIf="countries">
+			<div *ngIf="dataSource.data.length; else noRecord">
 				<table mat-table [dataSource]="dataSource" class="main-table">
 					<!-- indicator Column -->
 					<ng-container matColumnDef="indicator">
@@ -49,6 +49,11 @@
 				>
 				</mat-paginator>
 			</div>
+			<ng-template #noRecord>
+				<div>
+				 No Result found ...
+				 </div>
+			   </ng-template>
 		</mat-card-content>
 	</mat-card>
 </div>

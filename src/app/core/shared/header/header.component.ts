@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Region } from '../../models/countries.model';
+import { DataFilter, Region } from '../../models/countries.model';
 import { CountriesService } from '../../services/countries.service';
 
 @Component({
@@ -9,6 +9,9 @@ import { CountriesService } from '../../services/countries.service';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+	filter:DataFilter[]=[];
+	@Output() filterChange = new EventEmitter();
+
 	filterForm: FormGroup;
 	City: any = ['Florida', 'South Dakota', 'Tennessee', 'Michigan'];
 	regions: any = [];
@@ -19,9 +22,15 @@ export class HeaderComponent implements OnInit {
 		this.filterForm = this.fb.group({
 			region: ['Regions'],
 			indicator: [''],
-			strartYear: [''],
-			endYear: [''],
+			startYear: [],
+			endYear: [],
 		});
+	}
+
+	searchCountry() {
+		this.filter = this.filterForm.value;
+		this.filterChange.emit(this.filter);
+		console.log(this.filterForm.value);
 	}
 
 	ngOnInit(): void {

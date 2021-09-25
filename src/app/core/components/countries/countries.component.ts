@@ -45,9 +45,9 @@ export class CountriesComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.subscription = this.countriesService.countries.subscribe(
 			(countries) => {
-				console.log(countries);
 				this.countries = countries;
-				this.dataSource.data = this.countries;
+			   (this.countries ) ? this.dataSource.data = this.countries : this.dataSource.data = [];
+			   	this.dataSource.paginator = this.paginator;
 			}
 		);
 	}
