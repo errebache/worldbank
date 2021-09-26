@@ -48,11 +48,7 @@ export class HeaderComponent implements OnInit {
 	}
 
 	getIndicator() {
-		this.countriesService.getIndicators().subscribe((data) => {
-			let result: any = [];
-			result = data;
-			this.indicators = result[1];
-		});
+		this.indicators  = this.countriesService.indicatorsSelect;
 	}
 
 	

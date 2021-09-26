@@ -22,6 +22,37 @@ export class CountriesService {
 	countries = this.countriesList.asObservable();
     indicators = this.allIndicators.asObservable();
 
+   indicatorsSelect = [
+	   {
+		id: "NY.GDP.MKTP.CD",
+		value: "GDP (current US$)"		
+	   },
+	   {
+		id: "SP.POP.TOTL",
+		value: "Population, total"		
+	   },
+	   {
+		id: "NE.IMP.GNFS.CD",
+		value: "Imports of goods and services (current US$)"		
+	   }
+	   ,{
+		id: "NY.ADJ.NNTY.PC.CD",
+		value: "Adjusted net national income per capita (current US$)"		
+	   },
+	   {
+		id: "SH.PRV.SMOK",
+		value: "Prevalence of current tobacco use (% of adults)"		
+	   },
+	   {
+		id: "SH.XPD.CHEX.GD.ZS",
+		value: " Current health expenditure (% of GDP)"		
+	   },
+	   {
+		id: "SP.DYN.LE00.IN",
+		value: "Life expectancy at birth, total (years)"		
+	   }
+   ]
+
 	// Http Options
 	httpOptions = {
 		headers: new HttpHeaders({
@@ -65,6 +96,7 @@ export class CountriesService {
 			.get<Region>(`${this.apiURL}indicator?${this.format}`)
 			.pipe(retry(1), catchError(this.handleError));
 	}
+   
 
 	getIndicatorById(country:string,indicator:string,date:number) {
 		return this.http
