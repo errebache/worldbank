@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material.module';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
 	declarations: [AppComponent],

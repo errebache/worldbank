@@ -2,7 +2,7 @@
 
 <div class="dashboard d-flex">
 	<div class="listes-countries d-flex">
-		<app-countries></app-countries>
+		<app-countries (rowSelected)="selectedRow($event)"></app-countries>
 	</div>
 	<div class="detail">
 		<app-indicators></app-indicators>

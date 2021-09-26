@@ -4,8 +4,11 @@ import {
 	Countries,
 	DataCountries,
 	DataFilter,
+	Indicator,
 } from '../../models/countries.model';
 import { CountriesService } from '../../services/countries.service';
+import { Chart } from 'chart.js';
+
 
 @Component({
 	selector: 'app-dashboard',
@@ -14,8 +17,11 @@ import { CountriesService } from '../../services/countries.service';
 })
 export class DashboardComponent implements OnInit {
 	countries: DataCountries[] = [];
-	filterData: DataFilter = {region:'Regions',indicator:[],startYear:2000,endYear:2002};
-	constructor(private contiesService: CountriesService) {}
+	filterData: DataFilter = {region:'Regions',indicator:'',startYear:0,endYear:0};
+	indicators:DataCountries[] = [];
+	chart = [];
+
+	constructor(private countriesService: CountriesService) {}
 
 	ngOnInit(): void {
 		this.loadCountries(this.filterData);
@@ -27,8 +33,8 @@ export class DashboardComponent implements OnInit {
 
 	// Get countries list
 	getCountries(filter:DataFilter) {
-		return this.contiesService
-			.getcountries(filter?.region, ['AG.AGR.TRAC.NO', 'SP.POP.TOTL'], filter?.startYear, filter?.endYear)
+		return this.countriesService
+			.getcountries(filter?.region, filter?.indicator, filter?.startYear, filter?.endYear)
 			.subscribe((data) => {
 				let result: any = [];
 				result = data;
@@ -39,31 +45,31 @@ export class DashboardComponent implements OnInit {
 	}
 
 	setCountries(countries: DataCountries[]) {
-		this.contiesService.setListCountries(countries);
+		this.countriesService.setListCountries(countries);
 	}
-
-    
-    // loadCountries(filterData:DataFilter) {
-        
-    //     if(filterData.region == 'Regions' && filterData.startYear == null && filterData.endYear == null){
-	// 		filterData = {region:'AEF',indicator:[],startYear:2000,endYear:2002};
-	// 		this.getCountries(filterData);
-    //     } else if(filterData.startYear !== null && filterData.endYear !== null){
-	// 		this.getCountries(filterData);
-	// 	}
-
-    // }
-
 
 	loadCountries(filterData:DataFilter) {
 		(filterData?.region == 'Regions') ? filterData.region = 'AFE' : filterData.region;
-		(filterData.startYear == null) ? filterData.startYear = 2001 : filterData.startYear;
-		(filterData.endYear == null) ? filterData.endYear = 2002 : filterData.endYear;
+		(filterData?.indicator == '') ? filterData.indicator = 'NY.GDP.MKTP.CD' : filterData.indicator;
+		(filterData.startYear == null || filterData.startYear == 0) ? filterData.startYear = 2000 : filterData.startYear;
+		(filterData.endYear == null || filterData.endYear == 0) ? filterData.endYear = 2001 : filterData.endYear;
 		
 		if(filterData.startYear !== null && filterData.endYear !== null){
 			this.getCountries(filterData);
 		}
 
 	}
+
+   selectedRow(event:DataCountries){
+	   console.log(`%c je suis dans parent`,`color:red;font-size:20px`)
+	   console.log(event);
+			this.countriesService.getIndicatorById(event.country.id!,event.indicator.id!,event.date!).subscribe((data)=>{
+			let result: any = [];
+			result = data;
+			this.indicators = result[1];
+			this.countriesService.setIndicators(this.indicators);
+			
+	   })
+   }
 	
 }

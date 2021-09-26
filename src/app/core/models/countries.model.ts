@@ -60,8 +60,8 @@ export interface Countries {
 	data: DataCountries;
 }
 export interface DataCountries {
-	indicator: Indicator[];
-	country: Country[];
+	indicator: Indicator;
+	country: Country;
 	countryiso3code?: string;
 	date?: number;
 	value?: string;
@@ -88,7 +88,7 @@ export interface Region {
 
 export interface DataFilter {
 	region: string;
-	indicator: string[];
+	indicator: string;
 	startYear: number;
 	endYear: number;
 }

@@ -1,9 +1,11 @@
 import {
 	Component,
+	EventEmitter,
 	Input,
 	OnChanges,
 	OnDestroy,
 	OnInit,
+	Output,
 	SimpleChanges,
 	ViewChild,
 	ViewEncapsulation,
@@ -21,6 +23,7 @@ import { CountriesService } from '../../services/countries.service';
 	encapsulation: ViewEncapsulation.None,
 })
 export class CountriesComponent implements OnInit, OnDestroy {
+	@Output() rowSelected : EventEmitter<any> = new EventEmitter();
 	countries: DataCountries[] = [];
 
 	displayedColumns: string[] = [
@@ -36,20 +39,32 @@ export class CountriesComponent implements OnInit, OnDestroy {
 	paginator!: MatPaginator;
 
 	ngAfterViewInit() {
-		this.dataSource.paginator = this.paginator;
-		console.log(this.countries);
+	   this.getData();
 	}
 
 	constructor(private countriesService: CountriesService) {}
 
 	ngOnInit(): void {
+	  this.getData();
+	}
+
+	getData() {
 		this.subscription = this.countriesService.countries.subscribe(
-			(countries) => {
-				this.countries = countries;
-			   (this.countries ) ? this.dataSource.data = this.countries : this.dataSource.data = [];
-			   	this.dataSource.paginator = this.paginator;
-			}
-		);
+		(countries) => {
+			this.countries = countries;
+			(this.countries ) ? this.dataSource.data = this.countries : this.dataSource.data = [];
+			this.dataSource.paginator = this.paginator;
+		}
+	);
+	}
+
+	selectedRow(row:DataCountries) {
+		console.log(row);
+	   this.rowSelected.emit(row);
+	}
+   
+	setIndicators(indicator: DataCountries[]) {
+		this.countriesService.setListCountries(indicator);
 	}
 
 	ngOnDestroy() {

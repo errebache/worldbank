@@ -13,11 +13,14 @@ import {
 	providedIn: 'root',
 })
 export class CountriesService {
-	private countriesList = new BehaviorSubject<DataCountries[]>([]);
-
-	countries = this.countriesList.asObservable();
-
+    	
 	apiURL = 'http://api.worldbank.org/v2/';
+	format = 'format=json';
+
+	private countriesList = new BehaviorSubject<DataCountries[]>([]);
+    private allIndicators = new BehaviorSubject<DataCountries[]>([])
+	countries = this.countriesList.asObservable();
+    indicators = this.allIndicators.asObservable();
 
 	// Http Options
 	httpOptions = {
@@ -32,31 +35,41 @@ export class CountriesService {
 		this.countriesList.next(countries);
 	}
 
+	setIndicators(indicator:DataCountries[]) {
+      this.allIndicators.next(indicator);
+	}
+
 	getcountries(
 		region: string,
-		element: Array<string>,
+		element: string,
 		startYear: number,
 		endYear: number
 	): Observable<Countries> {
-		let indicators = element.join(';');
-		console.log(indicators);
+		// let indicators = element.join(';');
+		// console.log(indicators);
 		return this.http
 			.get<Countries>(
-				`${this.apiURL}country/${region}/indicator/${indicators}?source=2&format=json&date=${startYear}:${endYear}`
+				`${this.apiURL}country/${region}/indicator/${element}?source=2&${this.format}&date=${startYear}:${endYear}`
 			)
 			.pipe(retry(1), catchError(this.handleError));
-
-		// return this.http
-		// .get<Countries>(
-		// 	`${this.apiURL}country/${filterData.region}/indicator/${filterData.indicator}?source=2&format=json&${filterData.startYear}:${filterData.endYear}`
-		// )
-		// .pipe(retry(1), catchError(this.handleError));
 	}
 
 	getRegions() {
 		return this.http
-			.get<Region>(this.apiURL + 'region?format=json')
+			.get<Region>(`${this.apiURL}region?${this.format}`)
 			.pipe(retry(1), catchError(this.handleError));
+	}
+
+	getIndicators() {
+		return this.http
+			.get<Region>(`${this.apiURL}indicator?${this.format}`)
+			.pipe(retry(1), catchError(this.handleError));
+	}
+
+	getIndicatorById(country:string,indicator:string,date:number) {
+		return this.http
+		.get<Region>(`${this.apiURL}country/${country}/indicator/${indicator}?${this.format}&date=${date}`)
+		.pipe(retry(1), catchError(this.handleError));
 	}
 
 	handleError(error: any) {

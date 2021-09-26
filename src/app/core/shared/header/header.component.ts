@@ -9,12 +9,12 @@ import { CountriesService } from '../../services/countries.service';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-	filter:DataFilter[]=[];
 	@Output() filterChange = new EventEmitter();
-
+	filter:DataFilter[]=[];
 	filterForm: FormGroup;
-	City: any = ['Florida', 'South Dakota', 'Tennessee', 'Michigan'];
 	regions: any = [];
+	indicators: any = [];
+
 	constructor(
 		public fb: FormBuilder,
 		private countriesService: CountriesService
@@ -27,18 +27,33 @@ export class HeaderComponent implements OnInit {
 		});
 	}
 
+	ngOnInit(): void {
+	  this.getRegion();
+	  this.getIndicator();
+	}
+
 	searchCountry() {
 		this.filter = this.filterForm.value;
 		this.filterChange.emit(this.filter);
 		console.log(this.filterForm.value);
 	}
 
-	ngOnInit(): void {
+
+	getRegion() {
 		this.countriesService.getRegions().subscribe((data) => {
 			let result: any = [];
 			result = data;
 			this.regions = result[1];
-			console.log(this.regions);
 		});
 	}
+
+	getIndicator() {
+		this.countriesService.getIndicators().subscribe((data) => {
+			let result: any = [];
+			result = data;
+			this.indicators = result[1];
+		});
+	}
+
+	
 }
